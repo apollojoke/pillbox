@@ -1,17 +1,33 @@
 import com.tw.container.PillBox;
 import example.Aspirin;
+import example.Vitamin;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class IoCTest {
+
+    private PillBox pillbox;
+
+    @Before
+    public void setUp() throws Exception {
+        pillbox = PillBox.loadContext("application_context.xml");
+    }
+
     @Test
     public void should_create_pill() throws Exception {
-        PillBox pillbox = PillBox.loadContext("application_context.xml");
         final Object aspirin = pillbox.create_pill("aspirin");
         assertThat(aspirin, notNullValue());
         assertThat((Aspirin)aspirin, notNullValue());
+    }
+
+    @Test
+    public void should_create_by_pill_name() throws Exception {
+        final Object pill = pillbox.create_pill("vitamin");
+        assertThat(pill, notNullValue());
+        assertThat((Vitamin)pill, notNullValue());
     }
 
 }
