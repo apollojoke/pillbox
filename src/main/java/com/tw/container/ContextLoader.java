@@ -5,12 +5,13 @@ import org.yaml.snakeyaml.Yaml;
 import java.util.List;
 
 public class ContextLoader {
-    public static List getContextDefinition(String path) {
+
+    public static PillContext getContextDefinition(String path) {
         Yaml yaml = new Yaml();
         String document = "- id: aspirin\n  class: example.Aspirin\n- id: vitamin\n" +
                 "  class: example.Vitamin\n";
         List pillMap = (List) yaml.load(document);
         System.out.println(pillMap);
-        return pillMap;
+        return new PillContext(pillMap);
     }
 }

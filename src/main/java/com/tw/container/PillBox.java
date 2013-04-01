@@ -31,7 +31,7 @@ public class PillBox {
     }
 
     public static PillBox loadContext(String path)  {
-        List pillMap = ContextLoader.getContextDefinition(path);
+        List pillMap = ContextLoader.getContextDefinition(path).getMap();
         return new PillBox(pillMap);
 
     }
