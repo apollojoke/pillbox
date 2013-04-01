@@ -2,15 +2,19 @@ package com.tw.container;
 
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 public class ContextLoader {
 
-    public static PillContext getContextDefinition(String path) {
+    public PillContext getContextDefinition(String path) throws FileNotFoundException {
         Yaml yaml = new Yaml();
-        String document = "- id: aspirin\n  class: example.Aspirin\n- id: vitamin\n" +
-                "  class: example.Vitamin\n";
-        List pillMap = (List) yaml.load(document);
+        Map pillMap = (Map) yaml.load(new FileInputStream(path));
         System.out.println(pillMap);
         return new PillContext(pillMap);
     }

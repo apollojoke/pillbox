@@ -1,15 +1,18 @@
 package com.tw.container;
 
-import java.util.List;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 public class PillContext {
-    private final List pillMap;
+    public static final String PILL_ID = "id";
+    private final Map<String, Map<String, String>> map;
 
-    public PillContext(List pillMap) {
-        this.pillMap = pillMap;
+    public PillContext(Map pillMap) {
+        map = Maps.newHashMap(pillMap);
     }
 
-    public List getMap() {
-        return pillMap;
+    public Map<String, String> getPill(String pillName) {
+        return map.get(pillName);
     }
 }

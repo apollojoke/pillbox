@@ -2,24 +2,23 @@ package com.tw.container;
 
 import com.google.common.collect.Maps;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
 public class PillBox {
-    public static final String PILL_ID = "id";
-    private final Map<String, Map<String, String>> map;
 
-    public PillBox(List<Map<String, String>> info) {
-        this.map = Maps.newHashMap();
-        for (Map<String, String> item : info) {
-            map.put(item.get(PILL_ID), item);
-        }
+    private final PillContext pillContext;
+
+    public PillBox(PillContext pillContext) {
+        this.pillContext = pillContext;
+
     }
 
     public Object create_pill(String pillName) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        final Map<String, String> objectInfo = map.get(pillName);
+        final Map<String, String> objectInfo = pillContext.getPill(pillName);
         return createObject(objectInfo);
     }
 
@@ -30,9 +29,9 @@ public class PillBox {
         return ctor.newInstance();
     }
 
-    public static PillBox loadContext(String path)  {
-        List pillMap = ContextLoader.getContextDefinition(path).getMap();
-        return new PillBox(pillMap);
+    public static PillBox loadContext(String path) throws FileNotFoundException {
+        PillContext pillContext = new ContextLoader().getContextDefinition(path);
+        return new PillBox(pillContext);
 
     }
 

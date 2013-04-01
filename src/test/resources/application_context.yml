@@ -1,4 +1,4 @@
-- id: aspirin
-    class: example.Aspirin
-- id: vitamin
-    class: example.Vitamin
+aspirin:
+  class : example.Aspirin
+vitamin:
+  class : example.Vitamin

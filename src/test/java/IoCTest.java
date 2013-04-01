@@ -4,6 +4,8 @@ import example.Vitamin;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.URL;
+
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -13,7 +15,8 @@ public class IoCTest {
 
     @Before
     public void setUp() throws Exception {
-        pillbox = PillBox.loadContext("application_context.xml");
+        final URL resource = getClass().getClassLoader().getResource("application_context.yml");
+        pillbox = PillBox.loadContext(resource.getFile());
     }
 
     @Test
