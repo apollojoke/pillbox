@@ -15,4 +15,9 @@ public class PillContext {
     public Map<String, Object> getPill(String pillName) {
         return map.get(pillName);
     }
+
+    public Class<?> getPillClass(String pillName) throws ClassNotFoundException {
+        Map<String, Object> pill = getPill(pillName);
+        return Class.forName(pill.get("class").toString());
+    }
 }

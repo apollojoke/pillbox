@@ -5,6 +5,7 @@
 *.war
 *.ear
 .idea
+example.iml
 pillbox.iml
 target/
 .DS_Store
