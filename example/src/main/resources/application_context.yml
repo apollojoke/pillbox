@@ -1,4 +1,6 @@
-aspirin:
-  class : example.Aspirin
-vitamin:
-  class : example.Vitamin
+a:
+  class : pills.Methamphetamine
+b:
+  class : pills.Marijuana
+c:
+  class : pills.Cocaine
