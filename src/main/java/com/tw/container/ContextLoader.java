@@ -15,7 +15,6 @@ public class ContextLoader {
     public PillContext getContextDefinition(String path) throws FileNotFoundException {
         Yaml yaml = new Yaml();
         Map pillMap = (Map) yaml.load(new FileInputStream(path));
-        System.out.println(pillMap);
         return new PillContext(pillMap);
     }
 }
