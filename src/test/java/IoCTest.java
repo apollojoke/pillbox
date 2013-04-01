@@ -15,7 +15,7 @@ public class IoCTest {
 
     @Before
     public void setUp() throws Exception {
-        final URL resource = getClass().getClassLoader().getResource("application_context.yml");
+        final URL resource = getClass().getResource("application_context.yml");
         pillbox = PillBox.loadContext(resource.getFile());
     }
 
