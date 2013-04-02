@@ -13,6 +13,7 @@ milk:
         3 : linoleicAcid
 protein:
   class : milk.Protein
+  scope : singleton
 fat:
   class : milk.Fat
 linoleicAcid:
