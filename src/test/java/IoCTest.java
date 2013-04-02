@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import java.net.URL;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -50,6 +52,18 @@ public class IoCTest {
         assertThat(milk.getProtein(), notNullValue());
         assertThat(milk.getFat(), notNullValue());
         assertThat(milk.getLinoleicAcid(), notNullValue());
+    }
+
+    @Test
+    public void should_create_pill_with_singleton_scope() throws Exception {
+        final URL resource = getClass().getResource("com/tw/container/test_scope_context.yml");
+        pillbox = PillBox.loadContext(resource.getFile());
+        final ManualMilk milk = (ManualMilk) pillbox.create_pill("milk");
+        final ManualMilk milk2 = (ManualMilk) pillbox.create_pill("milk");
+        assertThat(milk, not(milk2));
+        assertThat(milk.getProtein(), is(milk2.getProtein()));
+        assertThat(milk.getFat(), not(milk2.getFat()));
+        assertThat(milk.getLinoleicAcid(), not(milk2.getLinoleicAcid()));
     }
 
 }

@@ -2,12 +2,8 @@ package com.tw.container;
 
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 public class ContextLoader {

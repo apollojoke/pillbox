@@ -7,7 +7,6 @@ import com.sun.istack.internal.Nullable;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -17,9 +16,9 @@ import static com.google.common.collect.Iterators.transform;
 
 public class PillBox {
 
-    public static final String CLASS_KEY = "class";
     public static final String CONSTRUCTOR_ARGS_KEY = "constructor-args";
     public static final String PROPERTIES_KEY = "properties";
+
     private final PillContext pillContext;
 
     public PillBox(PillContext pillContext) {
@@ -27,21 +26,39 @@ public class PillBox {
 
     }
 
-    public Object create_pill(String pillName) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
+    public Object create_pill(String pillName) throws ClassNotFoundException,
+            NoSuchMethodException,
+            IllegalAccessException,
+            InvocationTargetException,
+            InstantiationException,
+            NoSuchFieldException {
         final Map<String, Object> objectInfo = pillContext.getPill(pillName);
-        return createObject(objectInfo);
+
+        Object target = pillContext.lookupFromCache(pillName);
+        if (target != null) {
+            return target;
+        }
+        return createObject(objectInfo, pillContext.getPillClass(pillName));
     }
 
-    private Object createObject(Map<String, Object> objectInfo) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
-        Class<?> clazz = Class.forName(objectInfo.get(CLASS_KEY).toString());
-        final Map argPills = objectInfo.containsKey(CONSTRUCTOR_ARGS_KEY) ?
+    private Object createObject(Map<String, Object> objectInfo, Class<?> clazz)
+            throws ClassNotFoundException,
+            NoSuchMethodException,
+            InstantiationException,
+            IllegalAccessException,
+            InvocationTargetException,
+            NoSuchFieldException {
+        final Map pillArgs = objectInfo.containsKey(CONSTRUCTOR_ARGS_KEY) ?
                 (Map) objectInfo.get(CONSTRUCTOR_ARGS_KEY) :
                 Maps.newHashMap();
-        Object object = createObjectWithConstructor(clazz, argPills);
+
+        Object object = createObjectWithConstructor(clazz, pillArgs);
         Map<String, String> properties = objectInfo.containsKey(PROPERTIES_KEY) ?
                 (Map<String, String>) objectInfo.get(PROPERTIES_KEY)
                 : Maps.<String, String>newHashMap();
-        return setProperties(object, properties);
+        Object target = setProperties(object, properties);
+        pillContext.cache(objectInfo, target);
+        return target;
     }
 
     private Object setProperties(Object object, Map<String, String> properties)
